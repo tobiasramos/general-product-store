@@ -10,6 +10,8 @@ interface StoreState {
 interface StoreActions {
   inc: () => void;
   getAllProducts: () => Promise<void>;
+  searchByName: (name: string) => Promise<void>;
+  filterProducts: (name: string) => Promise<void>;
 }
 
 export const useStore = create<StoreState & StoreActions>((set) => ({
@@ -21,6 +23,30 @@ export const useStore = create<StoreState & StoreActions>((set) => ({
     try {
       const response = await axios.get<{ products: Product[] }>(
         "https://dummyjson.com/products"
+      );
+      const sortedProducts = response.data.products.sort((a, b) => a.id - b.id);
+      set({ products: sortedProducts });
+    } catch (error) {
+      console.log("Erro ao buscar os produtos: " + error);
+    }
+  },
+
+  searchByName: async (name: string) => {
+    try {
+      const response = await axios.get<{ products: Product[] }>(
+        `https://dummyjson.com/products/search?q=${name}`
+      );
+      const sortedProducts = response.data.products.sort((a, b) => a.id - b.id);
+      set({ products: sortedProducts });
+    } catch (error) {
+      console.log("Erro ao buscar os produtos: " + error);
+    }
+  },
+
+  filterProducts: async (name: string) => {
+    try {
+      const response = await axios.get<{ products: Product[] }>(
+        `https://dummyjson.com/products/category/${name}`
       );
       const sortedProducts = response.data.products.sort((a, b) => a.id - b.id);
       set({ products: sortedProducts });
