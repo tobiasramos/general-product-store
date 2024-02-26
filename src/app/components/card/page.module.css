@@ -1,0 +1,33 @@
+.productContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: #ded1b6;
+}
+
+.product {
+    width: 580px;
+    margin: 10px 10px;
+    border-radius: 15px;
+    background-color: #eeee;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.contentStyle {
+    height: 390px;
+    color: #fff;
+    text-align: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: #364d79;
+}
+
+.btnAdd {
+    margin: 10px auto !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80% !important;
+    height: 38px;
+}
