@@ -7,24 +7,3 @@
     color: #F3A847;
     background-color: #131921;
 }
-
-.iconCartContainer {
-    position: relative;
-}
-
-.cartCount {
-    position: absolute;
-    top: 40%;
-    left: 55%;
-    z-index: 2;
-    transform: translate(-50%, -50%);
-    color: #A25515;
-    padding: 2px;
-    font-size: 16px;
-    border-radius: 50%;
-}
-
-.iconCart {
-    position: relative;
-    font-size: 56px;
-}
