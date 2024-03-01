@@ -4,7 +4,8 @@ import { useStore } from "../../store";
 import { useEffect, useState } from "react";
 import { Button, Carousel } from "antd";
 const CardProduct = () => {
-  const { inc, getAllProducts, products } = useStore();
+  const { inc, getAllProducts, products, addToCart } = useStore();
+  const [cart, setCart] = useState([]);
 
   const onChange = (currentSlide: any) => {
     console.log(currentSlide);
@@ -16,6 +17,11 @@ const CardProduct = () => {
 
   const handleIncrement = () => {
     inc();
+  };
+
+  const addProductToCart = (product: any) => {
+    inc();
+    addToCart(product);
   };
 
   return (
@@ -50,7 +56,12 @@ const CardProduct = () => {
           <p>{product.stock}</p>
           <p>{product.brand}</p>
           {/* <p>{product.category}</p> */}
-          <Button onClick={handleIncrement} type="primary" block className={styles.btnAdd}>
+          <Button
+            onClick={() => addProductToCart(product)}
+            type="primary"
+            block
+            className={styles.btnAdd}
+          >
             Comprar
           </Button>
         </div>
