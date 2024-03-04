@@ -95,8 +95,10 @@ export const useStore = create<StoreState & StoreActions>((set, getState) => ({
       }
       return item;
     });
-    set({ cart: updatedCart });
-    set((state) => ({ count: state.count - 1 }));
+    if (JSON.stringify(updatedCart) !== JSON.stringify(getState().cart)) {
+      set({ cart: updatedCart });
+      set((state) => ({ count: state.count - 1 }));
+    }
   },
 
   deleteToCart: (product: Product) => {
