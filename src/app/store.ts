@@ -7,6 +7,8 @@ interface StoreState {
   cart: Product[];
   products: Product[];
   deleteToCart: (product: Product) => void;
+  incrementQuantity: (productId: number) => void;
+  decrementQuantity: (productId: number) => void;
 }
 
 interface StoreActions {
@@ -17,10 +19,9 @@ interface StoreActions {
   filterProducts: (name: string) => Promise<void>;
   addToCart: (product: Product) => void;
   finalizePurchase: () => void;
-  deleteToCart: (product: Product) => void;
 }
 
-export const useStore = create<StoreState & StoreActions>((set) => ({
+export const useStore = create<StoreState & StoreActions>((set, getState) => ({
   count: 0,
   cart: [],
   setCount: (count: number) => set({ count }),
@@ -64,16 +65,46 @@ export const useStore = create<StoreState & StoreActions>((set) => ({
   },
 
   addToCart: (product: Product) => {
-    set((state) => ({
-      cart: [...state.cart, product],
-    }));
+    const existingProductIndex = getState().cart.findIndex(
+      (item) => item.id === product.id
+    );
+    if (existingProductIndex !== -1) {
+      const updatedCart = [...getState().cart];
+      updatedCart[existingProductIndex].quantity += 1;
+      set({ cart: updatedCart });
+    } else {
+      set({ cart: [...getState().cart, { ...product, quantity: 1 }] });
+    }
+  },
+
+  incrementQuantity: (productId: number) => {
+    const updatedCart = getState().cart.map((item) => {
+      if (item.id === productId) {
+        return { ...item, quantity: item.quantity + 1 };
+      }
+      return item;
+    });
+    set({ cart: updatedCart });
+    set((state) => ({ count: state.count + 1 }));
+  },
+
+  decrementQuantity: (productId: number) => {
+    const updatedCart = getState().cart.map((item) => {
+      if (item.id === productId && item.quantity > 1) {
+        return { ...item, quantity: item.quantity - 1 };
+      }
+      return item;
+    });
+    set({ cart: updatedCart });
+    set((state) => ({ count: state.count - 1 }));
   },
 
   deleteToCart: (product: Product) => {
-    set((state) => ({
-      cart: state.cart.filter((item) => item.id !== product.id),
-      count: state.count - 1,
-    }));
+    const updatedCart = getState().cart.filter(
+      (item) => item.id !== product.id
+    );
+    const count = updatedCart.reduce((total, item) => total + item.quantity, 0);
+    set({ cart: updatedCart, count });
   },
 
   finalizePurchase: () => {
