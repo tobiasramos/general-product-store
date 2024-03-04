@@ -11,7 +11,13 @@ import { useState } from "react";
 import { Button, Drawer, message } from "antd";
 const CartIcon = () => {
   const [count, setCount] = useStore((state) => [state.count, state.setCount]);
-  const { cart, deleteToCart } = useStore();
+  const {
+    cart,
+    deleteToCart,
+    finalizePurchase,
+    decrementQuantity,
+    incrementQuantity,
+  } = useStore();
 
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
@@ -27,8 +33,10 @@ const CartIcon = () => {
     } else {
       message.success("Compra aprovada!");
       setCount(0);
+      finalizePurchase();
     }
   };
+
   return (
     <div className={styles.iconCartContainer}>
       <span className={styles.cartCount}>{count}</span>
@@ -63,9 +71,13 @@ const CartIcon = () => {
                   </p>
                   <DeleteOutlined onClick={() => deleteToCart(product)} />
                   <div>
-                    <MinusOutlined />
-                    <span>0</span>
-                    <PlusOutlined />
+                    <MinusOutlined
+                      onClick={() => decrementQuantity(product.id)}
+                    />
+                    <span>{product.quantity}</span>
+                    <PlusOutlined
+                      onClick={() => incrementQuantity(product.id)}
+                    />
                   </div>
                 </div>
               </div>
