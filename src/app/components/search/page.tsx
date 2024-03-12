@@ -3,6 +3,7 @@ import { useStore } from "../../store";
 import { SearchOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import { useEffect, useState } from "react";
+import styles from "./page.module.css"
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,12 +21,13 @@ const Search = () => {
   };
 
   return (
-    <div>
+    <div className={styles.searchContainer}>
       <Input
         addonBefore={<SearchOutlined />}
         placeholder="Digite o nome do produto"
         value={searchTerm}
         onChange={handleSearch}
+        className={styles.search}
       />
     </div>
   );

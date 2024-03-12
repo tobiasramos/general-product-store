@@ -1,5 +1,22 @@
 .container {
+    margin-top: 16px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+}
+
+.container h1 {
+    color: #131921;
+}
+
+.container select {
+    width: 180px;
+    height: 32px;
+    margin-left: 35px;
+    padding: 5px 10px;
+    font-size: 18px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f8f8;
+    outline: none;
+    transition: border-color 0.3s ease;
 }

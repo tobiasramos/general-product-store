@@ -1,23 +1,14 @@
 "use client";
 import styles from "./page.module.css";
 import { useStore } from "../../store";
-import { useEffect, useState } from "react";
-import { Button, Carousel } from "antd";
+import { useEffect } from "react";
+import { Button, Carousel, Rate } from "antd";
 const CardProduct = () => {
   const { inc, getAllProducts, products, addToCart } = useStore();
-  const [cart, setCart] = useState([]);
-
-  const onChange = (currentSlide: any) => {
-    console.log(currentSlide);
-  };
 
   useEffect(() => {
     getAllProducts();
   }, []);
-
-  const handleIncrement = () => {
-    inc();
-  };
 
   const addProductToCart = (product: any) => {
     inc();
@@ -28,7 +19,7 @@ const CardProduct = () => {
     <div className={styles.productContainer}>
       {products.map((product) => (
         <div key={product.id} className={styles.product}>
-          <Carousel afterChange={onChange} autoplay>
+          <Carousel autoplay>
             {product.images.map((image, index) => (
               <img
                 key={index}
@@ -38,24 +29,20 @@ const CardProduct = () => {
               />
             ))}
           </Carousel>
-
-          <h2>{product.title}</h2>
-          {/* <p>{product.description}</p> */}
-          <p>
-            {product.price.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            })}
-          </p>
-          <p>
-            {product.discountPercentage.toLocaleString("pt-BR", {
-              style: "percent",
-            })}
-          </p>
-          <p>{product.rating}</p>
-          <p>{product.stock}</p>
-          <p>{product.brand}</p>
-          {/* <p>{product.category}</p> */}
+          <div className={styles.description}>
+            <h2>{product.title}</h2>
+            <p className={styles.price}>
+              {product.price.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
+            </p>
+            <div>
+              {product.rating.toFixed(1)}
+              :
+              <Rate disabled value={Number(product.rating.toFixed(1))} />
+            </div>
+          </div>
           <Button
             onClick={() => addProductToCart(product)}
             type="primary"

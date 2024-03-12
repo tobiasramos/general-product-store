@@ -31,7 +31,7 @@ const CartIcon = () => {
     if (count === 0) {
       message.error("Seu carrinho está vazio!");
     } else {
-      message.success("Compra aprovada!");
+      message.success("Compra efetuada!");
       setCount(0);
       finalizePurchase();
     }
@@ -61,7 +61,8 @@ const CartIcon = () => {
                   alt={`Imagem 1`}
                   className={styles.contentStyle}
                 />
-                <div>
+                <div className={styles.infoContainer} >
+                  <div className={styles.info}>
                   <p>{product.title}</p>
                   <p>
                     {product.price.toLocaleString("pt-BR", {
@@ -69,15 +70,20 @@ const CartIcon = () => {
                       currency: "BRL",
                     })}
                   </p>
-                  <DeleteOutlined onClick={() => deleteToCart(product)} />
-                  <div>
-                    <MinusOutlined
-                      onClick={() => decrementQuantity(product.id)}
-                    />
-                    <span>{product.quantity}</span>
-                    <PlusOutlined
-                      onClick={() => incrementQuantity(product.id)}
-                    />
+                  </div>
+                 
+                  <div className={styles.btnsContainer}>
+                    {" "}
+                    <div className={styles.btnsMinusPlus}>
+                      <MinusOutlined
+                        onClick={() => decrementQuantity(product.id)}
+                      />
+                      <span>{product.quantity}</span>
+                      <PlusOutlined
+                        onClick={() => incrementQuantity(product.id)}
+                      />
+                    </div>
+                    <DeleteOutlined className={styles.deleteIcon} onClick={() => deleteToCart(product)} />
                   </div>
                 </div>
               </div>
