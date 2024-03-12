@@ -7,3 +7,10 @@
     color: #F3A847;
     background-color: #131921;
 }
+
+.searches {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 5px;
+}
