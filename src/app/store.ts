@@ -1,6 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { Product } from "./components/interface/product";
+import { message } from "antd";
 
 interface StoreState {
   count: number;
@@ -70,9 +71,7 @@ export const useStore = create<StoreState & StoreActions>((set, getState) => ({
     );
     if (existingProduct) {
       const updatedCart = getState().cart.map((item) =>
-        item.id === product.id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
+        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
       );
       set({ cart: updatedCart });
 
@@ -98,22 +97,29 @@ export const useStore = create<StoreState & StoreActions>((set, getState) => ({
   },
 
   incrementQuantity: (productId: number) => {
-    const updatedCart = getState().cart.map((item) => {
-      if (item.id === productId) {
-        return { ...item, quantity: item.quantity + 1 };
-      }
-      return item;
-    });
-    set({ cart: updatedCart });
+    const productToUpdate = getState().products.find(
+      (item) => item.id === productId
+    );
+    if (productToUpdate && productToUpdate.stock > 0) {
+      const updatedCart = getState().cart.map((item) => {
+        if (item.id === productId) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      });
+      set({ cart: updatedCart });
 
-    const updatedProducts = getState().products.map((item) => {
-      if (item.id === productId) {
-        return { ...item, stock: item.stock - 1 };
-      }
-      return item;
-    });
-    set({ products: updatedProducts });
-    set((state) => ({ count: state.count + 1 }));
+      const updatedProducts = getState().products.map((item) => {
+        if (item.id === productId) {
+          return { ...item, stock: item.stock - 1 };
+        }
+        return item;
+      });
+      set({ products: updatedProducts });
+      set((state) => ({ count: state.count + 1 }));
+    } else {
+      message.error("Produto fora de estoque");
+    }
   },
 
   decrementQuantity: (productId: number) => {
