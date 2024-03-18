@@ -65,15 +65,35 @@ export const useStore = create<StoreState & StoreActions>((set, getState) => ({
   },
 
   addToCart: (product: Product) => {
-    const existingProductIndex = getState().cart.findIndex(
+    const existingProduct = getState().cart.find(
       (item) => item.id === product.id
     );
-    if (existingProductIndex !== -1) {
-      const updatedCart = [...getState().cart];
-      updatedCart[existingProductIndex].quantity += 1;
+    if (existingProduct) {
+      const updatedCart = getState().cart.map((item) =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
       set({ cart: updatedCart });
+
+      const updatedProducts = getState().products.map((item) => {
+        if (item.id === product.id) {
+          return { ...item, stock: item.stock - 1 };
+        }
+        return item;
+      });
+      set({ products: updatedProducts });
     } else {
-      set({ cart: [...getState().cart, { ...product, quantity: 1 }] });
+      const updatedProducts = getState().products.map((item) => {
+        if (item.id === product.id) {
+          return { ...item, stock: item.stock - 1 };
+        }
+        return item;
+      });
+      set({
+        cart: [...getState().cart, { ...product, quantity: 1 }],
+        products: updatedProducts,
+      });
     }
   },
 
@@ -85,6 +105,14 @@ export const useStore = create<StoreState & StoreActions>((set, getState) => ({
       return item;
     });
     set({ cart: updatedCart });
+
+    const updatedProducts = getState().products.map((item) => {
+      if (item.id === productId) {
+        return { ...item, stock: item.stock - 1 };
+      }
+      return item;
+    });
+    set({ products: updatedProducts });
     set((state) => ({ count: state.count + 1 }));
   },
 
@@ -97,6 +125,14 @@ export const useStore = create<StoreState & StoreActions>((set, getState) => ({
     });
     if (JSON.stringify(updatedCart) !== JSON.stringify(getState().cart)) {
       set({ cart: updatedCart });
+
+      const updatedProducts = getState().products.map((item) => {
+        if (item.id === productId) {
+          return { ...item, stock: item.stock + 1 };
+        }
+        return item;
+      });
+      set({ products: updatedProducts });
       set((state) => ({ count: state.count - 1 }));
     }
   },
@@ -106,7 +142,13 @@ export const useStore = create<StoreState & StoreActions>((set, getState) => ({
       (item) => item.id !== product.id
     );
     const count = updatedCart.reduce((total, item) => total + item.quantity, 0);
-    set({ cart: updatedCart, count });
+    const updatedProducts = getState().products.map((item) => {
+      if (item.id === product.id) {
+        return { ...item, stock: item.stock + product.quantity };
+      }
+      return item;
+    });
+    set({ cart: updatedCart, count, products: updatedProducts });
   },
 
   finalizePurchase: () => {
