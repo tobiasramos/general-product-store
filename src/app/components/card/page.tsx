@@ -2,7 +2,7 @@
 import styles from "./page.module.css";
 import { useStore } from "../../store";
 import { useEffect, useState } from "react";
-import { Button, Carousel, Modal, Rate } from "antd";
+import { Button, Carousel, Modal, Rate, message } from "antd";
 import { Product } from "../interface/product";
 import Link from "antd/es/typography/Link";
 const CardProduct = () => {
@@ -24,8 +24,12 @@ const CardProduct = () => {
   }, []);
 
   const addProductToCart = (product: any) => {
-    inc();
-    addToCart(product);
+    if (product.stock > 0) { // Verifica se o estoque é maior que 0
+      inc(); // Incrementa o contador
+      addToCart(product); // Adiciona o produto ao carrinho
+    } else {
+      message.error('Produto fora de estoque');
+    }
   };
 
   return (
