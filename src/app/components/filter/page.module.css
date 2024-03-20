@@ -20,3 +20,15 @@
     outline: none;
     transition: border-color 0.3s ease;
 }
+
+@media (max-width: 558px) {
+    .container h1 {
+       font-size: 14px;
+    }
+
+    .container select{
+        width: 150px;
+        margin-left: 5px;
+        font-size: 14px;
+    }
+}
