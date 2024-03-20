@@ -14,3 +14,16 @@
     justify-content: space-around;
     padding: 5px;
 }
+
+@media (max-width: 858px) {
+    .searches {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 558px) {
+    .header h1{
+        font-size: 18px;
+    }
+}

@@ -1,5 +1,22 @@
 .search {
-    width: 350px;
+    width: 500px;
     height: 34px;
     margin-top: 15px;
+}
+
+@media (max-width: 968px) {
+    .search {
+        width: 350px;
+    }
+}
+
+
+@media (max-width: 858px) {
+    .searchContainer {
+        width: 100%;
+    }
+
+    .search {
+        width: 80%;
+    }
 }
