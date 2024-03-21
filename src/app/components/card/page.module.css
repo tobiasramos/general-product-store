@@ -78,7 +78,18 @@
 }
 
 @media (max-width: 558px) {
-    .product{
-       width: 88%;
+    .product {
+        width: 88%;
+    }
+
+    .description h2 {
+        width: 180px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 400px) {
+    .description h2 {
+        font-size: 14px;
     }
 }

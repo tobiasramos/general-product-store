@@ -9,6 +9,7 @@ const CardProduct = () => {
   const { inc, getAllProducts, products, addToCart } = useStore();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [visibleProducts, setVisibleProducts] = useState(5);
 
   const showModal = (product: any) => {
     setSelectedProduct(product);
@@ -23,18 +24,38 @@ const CardProduct = () => {
     getAllProducts();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 558) {
+        setVisibleProducts(5);
+      } else {
+        setVisibleProducts(products.length);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [products.length]);
+
   const addProductToCart = (product: any) => {
-    if (product.stock > 0) { // Verifica se o estoque é maior que 0
-      inc(); // Incrementa o contador
-      addToCart(product); // Adiciona o produto ao carrinho
+    if (product.stock > 0) {
+      inc();
+      addToCart(product);
     } else {
-      message.error('Produto fora de estoque');
+      message.error("Produto fora de estoque");
     }
   };
 
+  const loadMoreProducts = () => {
+    setVisibleProducts((prevVisibleProducts: any) => prevVisibleProducts + 5);
+  };
+
   return (
-    <div className={styles.productContainer}>
-      {products.map((product) => (
+    <main className={styles.productContainer}>
+      {products.slice(0, visibleProducts).map((product) => (
         <div key={product.id} className={styles.product}>
           <Carousel autoplay>
             {product.images.map((image, index) => (
@@ -74,6 +95,9 @@ const CardProduct = () => {
           </Link>
         </div>
       ))}
+      {visibleProducts < products.length && (
+        <Button onClick={loadMoreProducts}>Carregar mais</Button>
+      )}
       <Modal
         title={selectedProduct ? selectedProduct.title : ""}
         open={isModalOpen}
@@ -122,13 +146,16 @@ const CardProduct = () => {
             <div>
               <span className={styles.characteristics}>Avaliação: </span>
               <span>
-              <Rate disabled value={Number(selectedProduct.rating.toFixed(1))} />
-            </span>
+                <Rate
+                  disabled
+                  value={Number(selectedProduct.rating.toFixed(1))}
+                />
+              </span>
             </div>
           </div>
         )}
       </Modal>
-    </div>
+    </main>
   );
 };
 
