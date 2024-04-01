@@ -54,14 +54,20 @@ export const useStore = create<StoreState & StoreActions>((set, getState) => ({
   },
 
   filterProducts: async (name: string) => {
-    try {
-      const response = await axios.get<{ products: Product[] }>(
-        `https://dummyjson.com/products/category/${name}`
-      );
-      const sortedProducts = response.data.products.sort((a, b) => a.id - b.id);
-      set({ products: sortedProducts });
-    } catch (error) {
-      console.log("Erro ao buscar os produtos: " + error);
+    if (name.toLowerCase() === "product") {
+      await getState().getAllProducts();
+    } else {
+      try {
+        const response = await axios.get<{ products: Product[] }>(
+          `https://dummyjson.com/products/category/${name}`
+        );
+        const sortedProducts = response.data.products.sort(
+          (a, b) => a.id - b.id
+        );
+        set({ products: sortedProducts });
+      } catch (error) {
+        console.log("Erro ao buscar os produtos: " + error);
+      }
     }
   },
 
