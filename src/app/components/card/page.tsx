@@ -88,7 +88,7 @@ const CardProduct = () => {
             block
             className={styles.btnAdd}
           >
-            Comprar
+            Adicionar ao carrinho
           </Button>
           <Link className={styles.link} onClick={() => showModal(product)}>
             Ver mais...
