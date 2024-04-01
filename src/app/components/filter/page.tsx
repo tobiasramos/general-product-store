@@ -13,6 +13,7 @@ const Filter = () => {
     <div className={styles.container}>
       <h1>Filtrar por:</h1>
       <select name="category" onChange={handleFilterChange}>
+        <option value="product">Filtrar...</option>
         <option value="smartphones">Smartphones</option>
         <option value="laptops">Laptops</option>
         <option value="fragrances">Fragrances</option>
