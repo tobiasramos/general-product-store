@@ -7,7 +7,7 @@
 }
 
 .product {
-    width: 400px;
+    width: 425px;
     margin: 10px 10px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -29,9 +29,9 @@
     margin-bottom: 20px;
 }
 
-.description  h2 {
-    width: 300px;
-    font-size: 24px;
+.description h2 {
+    width: 280px;
+    font-size: 18px;
 }
 
 .price {
@@ -74,12 +74,6 @@
 .characteristics {
     font-size: 18px;
     font-weight: 800;
-}
-
-@media (max-width: 968px) {
-    .product {
-        width: 450px;
-    }
 }
 
 @media (max-width: 558px) {
