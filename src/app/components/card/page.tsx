@@ -136,7 +136,7 @@ const CardProduct = () => {
               <span>{selectedProduct.stock}</span>
             </div>
             <div>
-              <span className={styles.characteristics}>Categoria: </span>
+              <span className={styles.characteristics}>Categoria:</span>
               <span>{selectedProduct.category}</span>
             </div>
             <div>
